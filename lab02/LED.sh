@@ -1,45 +1,56 @@
 #!/bin/bash
 
-# script baseado no código disponibilizado em:
-# Derek Molloy, Exploring Raspberry Pi: Interfacing to the Real World with Embedded Linux,
-# Wiley 2016, ISBN 978-1-119-1868-1, http://www.exploringrpi.com/
+#Led vermelho 2s
+#Led verde 1s
+#Led amarelo 1s
+LED_GPIO_AMARELO=16
+LED_GPIO_VERMELHO=20
+LED_GPIO_VERDE=21
 
-LED_GPIO=16  # Usar uma variavel facilita alteracoes futuras na porta usada
-
-# funcoes Bash
+#Função que altera valor do LED
+#$1 corresponde ao estado e $2 o LED em questao
 function setLED
-{                                      # $1 eh o primeiro argumento passado para a funcao
-	echo $1 >> "/sys/class/gpio/gpio$LED_GPIO/value"
+{                                    
+	echo $1 >> "/sys/class/gpio/gpio$2/value"
 }
 
-# Inicio do programa
-if [ $# -ne 1 ]; then                  # se nao houver exatamente um argumento passado ao programa
-	echo "Nenhum comando passado. Uso: ./LED.sh command,"
-	echo "onde comando pode ser: setup, on, off, status e close"
-	echo -e " ex.: ./LED.sh setup, e em seguinda, ./LED.sh on"
-	exit 2                         # erro que indica numero invalido de argumentos
-fi
+#Abrindo portas
+echo $LED_GPIO_VERMELHO >> "/sys/class/gpio/export"
+sleep 1 
+echo "out" >> "/sys/class/gpio/gpio$LED_GPIO_VERMELHO/direction"
 
-echo "O comando passado foi: $1"
+echo $LED_GPIO_AMARELO >> "/sys/class/gpio/export"
+sleep 1
+echo "out" >> "/sys/class/gpio/gpio$LED_GPIO_AMARELO/direction"
 
-if [ "$1" == "setup" ]; then
-	echo "Habilitando a GPIO numero $LED_GPIO"
-	echo $LED_GPIO >> "/sys/class/gpio/export"
-	sleep 1                        # esperar 1 segundo para garantir que a gpio foi exportada
-	echo "out" >> "/sys/class/gpio/gpio$LED_GPIO/direction"
-elif [ "$1" == "on" ]; then
-	echo "Acendendo o LED"
-	setLED 1                       # 1 eh recebido como $1 na funcao setLED
-elif [ "$1" == "off" ]; then
-	echo "Desligando o LED"
-	setLED 0                       # 0 eh recebido como $1 na funcao setLED
-elif [ "$1" == "status" ]; then
-	state=$(cat "/sys/class/gpio/gpio$LED_GPIO/value")
-	echo "O estado do LED eh: $state"
-elif [ "$1" == "close" ]; then
-	echo "Desabilitando a GPIO numero $LED_GPIO"
-	echo $LED_GPIO >> "/sys/class/gpio/unexport"
-else
-	echo "Comando nao reconhecido."
-	exit 3                         # erro que indica comando nao reconhecido
-fi
+echo $LED_GPIO_VERDE >> "/sys/class/gpio/export"
+sleep 1
+echo "out" >> "/sys/class/gpio/gpio$LED_GPIO_VERDE/direction"
+
+#Contador para while
+c=0
+while [ $c -le 5 ]
+do 
+	#LED vermelho
+	setLED 1 LED_GPIO_VERMELHO
+	sleep 2
+	setLED 0 LED_GPIO_VERMELHO
+
+	#LED verde
+	setLED 1 LED_GPIO_VERDE
+	sleep 1
+	setLED 0 LED_GPIO_VERDE
+
+	#LED amarelo
+	setLED 1 LED_GPIO_AMARELO
+	sleep 1
+	setLED 0 LED_GPIO_AMARELO
+
+	let c=c+1
+done
+#fechando portas
+echo $LED_GPIO_AMARELO >> "/sys/class/gpio/unexport"
+sleep 1
+echo $LED_GPIO_VERDE >> "/sys/class/gpio/unexport"
+sleep 1
+echo $LED_GPIO_VERMELHO >> "/sys/class/gpio/unexport"
