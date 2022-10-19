@@ -36,7 +36,7 @@ writeLED (filename="direction", value="out", path=LED_PATH_VERDE)
 
 c = 0
 #Contador e fcao while para executar 5x
-while c <= 5:
+while c < 5:
 
 #comando LED vermelho
 	writeLED (filename="value", value="1", path=LED_PATH_VERMELHO)
