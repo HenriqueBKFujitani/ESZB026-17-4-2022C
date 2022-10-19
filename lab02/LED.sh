@@ -3,6 +3,7 @@
 #Led vermelho 2s
 #Led verde 1s
 #Led amarelo 1s
+#Definindo varaveis com as portas
 LED_GPIO_AMARELO=16
 LED_GPIO_VERMELHO=20
 LED_GPIO_VERDE=21
@@ -45,7 +46,7 @@ do
 	setLED 1 LED_GPIO_AMARELO
 	sleep 1
 	setLED 0 LED_GPIO_AMARELO
-
+	#funcao que permite sobrescrever uma var em bash
 	let c=c+1
 done
 #fechando portas
