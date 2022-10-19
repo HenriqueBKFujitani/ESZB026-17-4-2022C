@@ -46,15 +46,15 @@ int main(int argc, char* argv[]){
         count++;
 
         writeGPIO(string(GPIO_RED_PATH), "value", "1");
-        usleep(200000);
+        usleep(2000000);  //2s
         writeGPIO(string(GPIO_RED_PATH), "value", "0");
    
         writeGPIO(string(GPIO_GRE_PATH), "value", "1");
-        usleep(200000);
+        usleep(1000000);  //1s
         writeGPIO(string(GPIO_GRE_PATH), "value", "0");
 
         writeGPIO(string(GPIO_YEL_PATH), "value", "1");
-        usleep(200000);
+        usleep(1000000);  //1s
         writeGPIO(string(GPIO_YEL_PATH), "value", "0");
         /*Execução da sequencia dos LEDs*/
         } 
