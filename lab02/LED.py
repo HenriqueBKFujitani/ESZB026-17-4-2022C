@@ -1,14 +1,4 @@
-
 #!/usr/bin/python3
-#Nosso
-#led_y= gpio16
-#led_r = gpio20
-#led_g = gpio21
-
-#led vermelho 2s
-#led verde 1s
-#led amarelo 1s
-#5x
 
 #importando bibliotecas 
 import sys
