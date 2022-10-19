@@ -29,7 +29,7 @@ sleep 1
 echo "out" >> "/sys/class/gpio/gpio$LED_GPIO_VERDE/direction"
 
 #Contador para while
-c=0
+c=1
 while [ $c -le 5 ]
 do 
 	#LED vermelho
