@@ -26,3 +26,6 @@ int main() {                            // este programa deve ser rodado com 'su
       }
    }
    return 0;     
+
+   //Não foi possível ir presencialmente para testar, esperamos que com essas configs de clock o motor funcione
+   
