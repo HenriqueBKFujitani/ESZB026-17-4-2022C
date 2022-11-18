@@ -29,7 +29,9 @@ void enviaDadosPelaSerial(){              // opcional, para debug
   Serial.print(buffer[1],HEX); Serial.print(" "); // byte mais significativo do valor lido
   Serial.print(buffer[2],HEX); Serial.print(" "); // byte menos significativo do alarme
   Serial.print(buffer[3],HEX); Serial.print(" "); // byte mais significativo do alarme
-  Serial.println(buffer[4],HEX);                  // valor ajustado no LED
+  Serial.print(buffer[4],HEX); Serial.print(" ");
+  Serial.print(buffer[5],HEX); Serial.print(" ");
+  Serial.println(buffer[6],HEX); Serial.print(" ");
 }
 
 void loop(){                       // Le o valor no potenciometro a cada 1 segundo
@@ -62,17 +64,22 @@ void funcaoDadoRecebido(int x){    // funcao chamada ao receber um dado
       limiteAlarme = valorRecebido;
     }
    
-  if( dadoRecebido == 0x10 && x == 3 ){  // se for alteracao do limite do alarme
-    byte dado1 = Wire.read();      // le byte menos significativo
-    byte dado2 = Wire.read();      // le byte mais significativo
-    int valorRecebido =  dado1 | ( dado2 << 8 );
-        
-    if ( valorRecebido >= 0 && valorRecebido <= 1023) {
-      buffer[6] = dado1;
-      buffer[7] = dado2;
-      limiteAlarme = valorRecebido;
-        }
+  if( dadoRecebido == 0x10 ){  // se for alteracao do limite do alarme
+    dadoA = valorPot*0.0048875;      // le byte menos significativo
+    byte dado1 = valorPot;
+    byte dado2 = valor << 8;
+
+    if ( dadoA >= 0 && dadoA <= 5 && valorPot >= 0 && valorPot <= 1023) {
+      byte dado3 = dadoA;
+      byte dado4 = (dadoA % 1)*100;
+      buffer[2] = dado1;
+      buffer[3] = dado2; 
+      buffer[5] = dado3;
+      buffer[6] = dado4;
+      limiteAlarme = valorPot;
     }
+  }      
+  
   }
 } 
 void funcaoResposta(){             // funcao chamada para responder
