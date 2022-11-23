@@ -32,9 +32,9 @@ int main(int argc, char **argv){
         perror("Limite do alarme fora da faixa especificada.\n");
         return 1;
      }
-     char alertbuf[] = {0x02, 0, 0};    // limite do alarme com 'comando' 0x02
-     alertbuf[1] = alert & 0xFF;        // byte menos significativo
-     alertbuf[2] = alert >> 8;          // byte mais significativo
+     char alertbuf[] = {0x10, 0, 0};    // limite do alarme com 'comando' 0x10
+     alertbuf[2] = alert & 0xFF;        // byte menos significativo
+     alertbuf[3] = alert >> 8;          // byte mais significativo
 
      printf("Ajustando limite do alarme em %d.\n", alert);
      if(write(file, alertbuf, 3)!=3){   // enviando os 3 bytes do alertbuf
